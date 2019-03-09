@@ -47,6 +47,12 @@ $ python3 spiderdata_demo/cmd/user_api.py
 /api/user/register
 ```
 
+* 请求头
+
+```
+Content-Type: application/json
+```
+
 * 请求参数
 
 |键|数据类型|功能|
@@ -87,6 +93,12 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"username":"Jerry","pass
 
 ```
 /api/user/login
+```
+
+* 请求头
+
+```
+Content-Type: application/json
 ```
 
 * 请求参数
@@ -132,6 +144,15 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"username":"Jerry","pass
 /api/data/jobs
 ```
 
+* 请求头
+
+> 注意：<token> 需要替换为登陆时获取到的token
+
+```
+Content-Type: application/json
+Authorization: Token <token>
+```
+
 * 请求参数
 
 |键|数据类型|功能|
@@ -153,9 +174,9 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"username":"Jerry","pass
 
 * 请求示例
 
-> 注意：需要通过请求头传递登陆时获取到的 token，如下：
+> 注意：需要通过请求头传递登陆时获取到的 token，例如：
+>
 > -H "Authorization: Token 3dac945a-5151-431f-845d-c1bf57a8038e"
-> Header 格式 ```Authorization: Token <token>```，使用登陆时获取到的 token 替换 ```<token>```
 
 ```
 $ curl -X GET -H "Content-Type: application/json" -H "Authorization: Token 3dac945a-5151-431f-845d-c1bf57a8038e" -d '{"language":"python"}' http://127.0.0.1:5000/api/data/jobs | python3 -m json.tool
