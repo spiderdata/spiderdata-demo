@@ -21,7 +21,8 @@ jobs = {
 }
 
 
-@app.route('/api/user/register', methods=['POST'])
+# 用户注册
+@app.route('/v1/users', methods=['POST'])
 def register():
     username = request.json.get('username')
     password = request.json.get('password')
@@ -49,7 +50,18 @@ def register():
     return make_response(jsonify(resp), 201)
 
 
-@app.route('/api/user/login', methods=['POST'])
+@app.route('/v1/users', methods=['GET'])
+@token_auth.login_required
+def user_details():
+    username = g.user
+    details = get_user_details(username)
+    resp = {'msg': 'OK',
+            'status': 10001,
+            'body': {'user': details}}
+    return make_response(jsonify(resp), 201)
+
+
+@app.route('/v1/auth/tokens', methods=['POST'])
 def login():
     # 从请求中获取用户名和密码
     username = request.json.get('username')
@@ -84,7 +96,7 @@ def login():
     return jsonify(resp), 201
 
 
-@app.route('/api/user/change_password', methods=['PUT'])
+@app.route('/v1/users/password', methods=['PUT'])
 @token_auth.login_required
 def change_password():
     old_password = request.json.get('old_password')
@@ -102,7 +114,7 @@ def change_password():
     return make_response(jsonify(resp), 201)
 
 
-@app.route('/api/data/jobs', methods=['GET'])
+@app.route('/v1/data/jobs', methods=['GET'])
 @token_auth.login_required
 def get_jobs_data():
     # TODO: 该接口应该放在 spiderdata_demon/data/api.py 中
@@ -152,6 +164,12 @@ def update_password(username, password):
     for u in users:
         if u['username'] == username:
             u['password'] = password
+
+
+def get_user_details(username):
+    for u in users:
+        if u['username'] == username:
+            return u
 
 
 def generate_auth_token(expiration = 600):
