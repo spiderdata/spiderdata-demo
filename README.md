@@ -44,7 +44,13 @@ $ python3 spiderdata_demo/cmd/user_api.py
 * API
 
 ```
-/api/user/register
+/v1/users
+```
+
+* Http Method
+
+```
+POST
 ```
 
 * 请求头
@@ -76,7 +82,7 @@ Content-Type: application/json
 * 请求示例
 
 ```
-$ curl -X POST -H "Content-Type: application/json" -d '{"username":"Jerry","password":"happy123"}' http://127.0.0.1:5000/api/user/register | python3 -m json.tool
+$ curl -X POST -H "Content-Type: application/json" -d '{"username":"Jerry","password":"happy123"}' http://127.0.0.1:5000/v1/users | python3 -m json.tool
 
 {
     "body": {
@@ -87,12 +93,18 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"username":"Jerry","pass
 }
 ```
 
-#### 用户登陆
+#### 获取用户token(登陆)
 
 * API
 
 ```
-/api/user/login
+/v1/auth/tokens
+```
+
+* Http Method
+
+```
+POST
 ```
 
 * 请求头
@@ -124,7 +136,7 @@ Content-Type: application/json
 * 请求示例
 
 ```
-$ curl -X POST -H "Content-Type: application/json" -d '{"username":"Jerry","password":"happy123"}' http://127.0.0.1:5000/api/user/login | python3 -m json.tool
+$ curl -X POST -H "Content-Type: application/json" -d '{"username":"Jerry","password":"happy123"}' http://127.0.0.1:5000/v1/auth/tokens | python3 -m json.tool
 
 {
     "body": {
@@ -141,7 +153,13 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"username":"Jerry","pass
 * API
 
 ```
-/api/data/jobs
+/v1/data/jobs
+```
+
+* Http Method
+
+```
+GET
 ```
 
 * 请求头
@@ -179,7 +197,7 @@ Authorization: Token <token>
 > -H "Authorization: Token 3dac945a-5151-431f-845d-c1bf57a8038e"
 
 ```
-$ curl -X GET -H "Content-Type: application/json" -H "Authorization: Token 3dac945a-5151-431f-845d-c1bf57a8038e" -d '{"language":"python"}' http://127.0.0.1:5000/api/data/jobs | python3 -m json.tool
+$ curl -X GET -H "Content-Type: application/json" -H "Authorization: Token 3dac945a-5151-431f-845d-c1bf57a8038e" -d '{"language":"python"}' http://127.0.0.1:5000/v1/data/jobs | python3 -m json.tool
 
 {
     "body": {
@@ -189,5 +207,62 @@ $ curl -X GET -H "Content-Type: application/json" -H "Authorization: Token 3dac9
     },
     "msg": "OK",
     "status": 20001
+}
+```
+
+#### 用户修改密码
+
+* API
+
+```
+/v1/users/password
+```
+
+* Http Method
+
+```
+PUT
+```
+
+* 请求头
+
+> 注意：<token> 需要替换为登陆时获取到的token
+
+```
+Content-Type: application/json
+Authorization: Token <token>
+```
+
+* 请求参数
+
+|键|数据类型|功能|
+|----|----|----|
+|old_password|str|旧密码|
+|new_password|str|新密码|
+
+* 返回数据
+
+|键|数据类型|功能|
+|----|----|----|
+|status|int|状态码|
+|msg|str|描述信息|
+|body|dict|返回数据|
+
+
+|键|数据类型|功能|
+|----|----|----|
+|username|str|修改密码用户的用户名|
+
+* 请求示例
+
+```
+$ curl -X PUT -H "Content-Type: application/json" -H "Authorization: Token 3dac945a-5151-431f-845d-c1bf57a8038e" -d '{"old_password":"happy123","new_password":"tarena123"}' http://127.0.0.1:5000/v1/users/password | python3 -m json.tool
+
+{
+    "body": {
+        "username": "Jerry"
+    },
+    "msg": "Change password successfully",
+    "status": 10001
 }
 ```
