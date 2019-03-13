@@ -266,3 +266,35 @@ $ curl -X PUT -H "Content-Type: application/json" -H "Authorization: Token 3dac9
     "status": 10001
 }
 ```
+
+---
+
+websocket 示例
+
+* 启动服务器
+
+```
+$ python3 spiderdata_demo/server/user/chat.py
+```
+
+* 打开网页端客户端
+
+```
+打开 spiderdata_demo/web/web-socket-example.html
+```
+
+* 打开命令行客户端
+
+```
+$ python3 spiderdata_demo/cmd/web_socket_client.py
+```
+
+* 可以在网页端与命令行端进行聊天
+
+```
+$ python3 web_socket_client.py 
+hello tom
+hello tony
+nice to meet you
+nice to meet you too
+```
