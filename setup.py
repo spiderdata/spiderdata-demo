@@ -5,7 +5,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         'Flask',
-        'Flask-Cors',
+        'flask-cors',
         'Flask-HTTPAuth'
     ],
 )
