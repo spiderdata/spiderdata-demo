@@ -1,8 +1,11 @@
 import uuid
 from flask import g, Flask, jsonify, make_response, request
 from flask_httpauth import HTTPTokenAuth
+from flask_cors import CORS
 
 app = Flask(__name__)
+# CORS(app, resources={r"/v1/*": {"origins": "*"}})
+CORS(app, supports_credentials=True)
 
 token_auth = HTTPTokenAuth('Token')
 
